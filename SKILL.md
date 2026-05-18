@@ -1,52 +1,136 @@
 ---
 name: conversation-explorer
-description: Use when Codex needs to work in this repository to reproduce a private iMessage conversation explorer, configure a user's own conversation history, run the local extraction and runtime artifact workflow, deploy the app with private data, or sanitize and publish the generic codebase without leaking personal archive material.
+description: Use when Codex needs to help a user access, snapshot, inspect, and ask questions about their local macOS Messages iMessage database (`~/Library/Messages/chat.db`). Trigger for requests involving chat.db, iMessage history, Messages exports, conversation analysis, or answering questions from local message data. Includes the required macOS Full Disk Access permission step.
 ---
 
 # Conversation Explorer
 
-## Core Rules
+## Goal
 
-- Treat every real message archive, runtime DB, attachment, screenshot, handle, and local config value as private.
-- Keep user-specific values in `config/conversation.local.json` or deployment env vars; never hard-code them in source.
-- Keep source labels generic unless they come from runtime DB metadata.
-- Do not commit generated data under `data/raw/`, `data/runtime/`, `public/attachments/`, browser traces, screenshots, local notes, or packed runtime artifacts.
-- Use `README.md` as the user-facing reproduction guide and keep this file as the concise agent workflow.
+Get from "I want to ask questions about my Messages history" to a private, queryable SQLite snapshot of `chat.db`.
 
-## Reproduce A Conversation
+## Privacy Rules
 
-1. Install dependencies with `pnpm install`.
-2. Copy `config/conversation.example.json` to `config/conversation.local.json`.
-3. Run `pnpm imessage:discover -- --messages-dir ~/Library/Messages` to list candidate one-on-one conversations.
-4. Run `pnpm imessage:discover -- --messages-dir ~/Library/Messages --candidate N` to print a config block for the chosen candidate.
-5. Fill the ignored local config with labels, handles, source path, output paths, and timezone.
-6. Run `pnpm etl -- --config config/conversation.local.json`.
-7. Run locally with `SITE_PASSPHRASE=local SITE_SECRET=local-secret pnpm dev`.
-8. Verify app labels, filters, and page copy come from runtime DB metadata rather than source constants.
+- Treat `chat.db`, WAL/SHM files, attachments, handles, phone numbers, emails, message text, screenshots, and exports as private.
+- Query a copied snapshot, not the live Messages database.
+- Prefer aggregate answers and small targeted excerpts over broad dumps.
+- Do not commit or upload copied databases, exports, attachments, or derived files unless the user explicitly asks and understands the privacy impact.
 
-## Runtime Artifact
+## Permission Step
 
-- Run `pnpm runtime:pack` after ETL to validate and gzip `data/runtime/conversation.db`.
-- Publish only to private object storage or a private release asset via `pnpm runtime:publish`.
-- Configure production with `RUNTIME_DB_URL`, `RUNTIME_DB_BEARER`, `RUNTIME_DB_SHA256`, `SITE_PASSPHRASE`, `SITE_SECRET`, and `NODE_ENV=production`.
-- Remember that the gzip artifact contains message text; a passphrase gate does not make public object storage safe.
+Before reading `~/Library/Messages/chat.db`, tell the user that macOS requires Full Disk Access for the app or terminal running commands.
 
-## Validation
+Ask them to grant access in:
 
-Run these before finishing code changes:
-
-```bash
-pnpm eval
-pnpm check-types
-pnpm test
-pnpm build
+```text
+System Settings -> Privacy & Security -> Full Disk Access
 ```
 
-Before publishing or pushing a generic copy, also run privacy scans:
+They should enable the actual process that will read the file, such as Terminal, iTerm, the IDE, or the Codex desktop app. After changing this setting, they may need to restart that app.
+
+If access is missing, commands often fail with `Operation not permitted`, return an empty-looking folder, or cannot copy `chat.db`.
+
+## Create A Snapshot
+
+Create a private working folder outside any public repo unless the user chooses a different location:
 
 ```bash
-rg -n -i "your-real-name|counterpart-real-name|known-private-handle|data/raw|data/runtime|public/attachments"
-find . -type f \( -name '*.db' -o -name '*.db.gz' -o -name '*.db-wal' -o -name '*.db-shm' -o -name '*.npy' -o -name '*.png' -o -name '*.jpg' -o -name '*.log' \) -print
+mkdir -p "$HOME/message-analysis/chat-snapshot"
+cp -p "$HOME/Library/Messages/chat.db" "$HOME/message-analysis/chat-snapshot/chat.db"
+test -f "$HOME/Library/Messages/chat.db-wal" && cp -p "$HOME/Library/Messages/chat.db-wal" "$HOME/message-analysis/chat-snapshot/chat.db-wal" || true
+test -f "$HOME/Library/Messages/chat.db-shm" && cp -p "$HOME/Library/Messages/chat.db-shm" "$HOME/message-analysis/chat-snapshot/chat.db-shm" || true
 ```
 
-Only `data/fixtures/tiny.db` should appear in the file scan.
+Use the copied path for all later queries:
+
+```bash
+DB="$HOME/message-analysis/chat-snapshot/chat.db"
+```
+
+## Verify The Database
+
+Confirm the snapshot opens and has the expected Messages tables:
+
+```bash
+sqlite3 "$DB" ".tables"
+sqlite3 "$DB" "select count(*) as messages from message;"
+sqlite3 "$DB" "select count(*) as handles from handle;"
+sqlite3 "$DB" "select count(*) as chats from chat;"
+```
+
+Useful tables usually include:
+
+- `message`: message rows, timestamps, text, sender direction, attachment flags.
+- `handle`: phone numbers, emails, or account identifiers.
+- `chat`: conversation threads.
+- `chat_message_join`: links messages to chats.
+- `chat_handle_join`: links chats to handles.
+- `attachment` and `message_attachment_join`: attachment metadata.
+
+## Start With Orientation Queries
+
+List active one-on-one or group chats before answering detailed questions:
+
+```sql
+select
+  c.ROWID as chat_id,
+  coalesce(c.display_name, group_concat(distinct h.id)) as chat_name,
+  count(distinct m.ROWID) as message_count,
+  min(m.date) as first_date_raw,
+  max(m.date) as last_date_raw
+from chat c
+join chat_message_join cmj on cmj.chat_id = c.ROWID
+join message m on m.ROWID = cmj.message_id
+left join chat_handle_join chj on chj.chat_id = c.ROWID
+left join handle h on h.ROWID = chj.handle_id
+group by c.ROWID
+order by message_count desc
+limit 25;
+```
+
+Convert modern Messages timestamps with Apple epoch nanoseconds:
+
+```sql
+datetime((m.date / 1000000000) + 978307200, 'unixepoch', 'localtime')
+```
+
+If a database uses older second-based timestamps, use:
+
+```sql
+datetime(m.date + 978307200, 'unixepoch', 'localtime')
+```
+
+## Answer Questions
+
+After the snapshot is verified, ask what the user wants to know. Common next steps:
+
+- Identify a target conversation by `chat_id`, handle, display name, or date range.
+- Count messages by sender, month, weekday, hour, or year.
+- Search for terms or phrases with targeted `like` queries.
+- Extract small samples around specific dates or keywords.
+- Build a derived local table or CSV for repeated analysis.
+
+For text previews, keep queries narrow:
+
+```sql
+select
+  m.ROWID,
+  datetime((m.date / 1000000000) + 978307200, 'unixepoch', 'localtime') as sent_at,
+  case when m.is_from_me = 1 then 'me' else coalesce(h.id, 'them') end as sender,
+  m.text
+from message m
+left join handle h on h.ROWID = m.handle_id
+where m.text like '%example%'
+order by m.date
+limit 20;
+```
+
+If `message.text` is null, the content may be in `attributedBody`; do not dump that blob. Decode only when needed and keep outputs scoped to the user's question.
+
+## Cleanup
+
+When finished, remind the user where the private snapshot lives and offer to delete it:
+
+```bash
+rm -rf "$HOME/message-analysis/chat-snapshot"
+```
