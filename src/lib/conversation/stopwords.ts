@@ -1,0 +1,18 @@
+export const STOPWORDS = new Set([
+  "the","a","an","and","or","but","if","so","of","in","on","at","to","for","with","by",
+  "is","are","was","were","be","been","being","have","has","had","do","does","did",
+  "i","you","we","they","he","she","it","me","my","your","our","their","his","her","its",
+  "this","that","these","those","as","not","no","yes","ok","okay","oh","um","uh","like","just",
+  "really","very","up","down","out","off","over","there","here","then","than","when","where","what","which","who",
+  "from","into","about","also","too","can","will","would","could","should",
+  "u","ur","ya","yeah","yep","yup","ima","gotta","ah","mm","mhm","mmm","hm","hmm","huh",
+  "lol","lmao","haha","hehe","nah","yo","hi","hey","hello","well","got","get","gets","getting","gotten",
+  "go","goes","going","went","gone","good","bad","sure","right","fine","one","two","three",
+  "im","i'm","ive","i've","ill","i'll","id","i'd",
+  "dont","don't","doesnt","doesn't","didnt","didn't","cant","can't","wont","won't","aint","ain't",
+  "thats","that's","theres","there's","whats","what's","heres","here's","its","it's",
+  "youre","you're","youve","you've","youll","you'll","youd","you'd",
+  "shes","she's","hes","he's","theyre","they're","weve","we've","were","we're",
+  "gonna","wanna","kinda","sorta","gotta","didn","doesn","wasn","wasn't","isn","isn't",
+  "wouldn","wouldn't","couldn","couldn't","shouldn","shouldn't","haven","haven't","hadn","hadn't","hasn","hasn't",
+]);

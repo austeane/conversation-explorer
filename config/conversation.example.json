@@ -1,0 +1,35 @@
+{
+  "conversation": {
+    "id": "example",
+    "title": "Example Conversation",
+    "brand": "conversation explorer",
+    "subtitle": "a private conversation, observed",
+    "timezone": "America/Vancouver"
+  },
+  "self": {
+    "label": "Me",
+    "shortLabel": "Me"
+  },
+  "counterpart": {
+    "label": "Them",
+    "shortLabel": "Them",
+    "handles": [
+      "+15555550123",
+      "person@example.invalid"
+    ]
+  },
+  "source": {
+    "messagesDir": "~/Library/Messages",
+    "includeGroups": false
+  },
+  "output": {
+    "dbPath": "data/runtime/conversation.db",
+    "rawSnapshotDir": "data/raw",
+    "attachmentsPublicDir": "public/attachments"
+  },
+  "comparison": {
+    "enabled": true,
+    "minMessages": 100,
+    "resolveContactNames": true
+  }
+}

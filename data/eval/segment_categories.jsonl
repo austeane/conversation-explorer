@@ -1,0 +1,5 @@
+{"segment_id":1,"gold_category":"romantic_intimacy","gold_status":"classified","notes":"fixture affectionate exchange"}
+{"segment_id":2,"gold_category":"logistics","gold_status":"classified","notes":"fixture dinner planning"}
+{"segment_id":3,"gold_category":"emotional_support","gold_status":"classified","notes":"fixture stress and reassurance"}
+{"segment_id":4,"gold_category":"small_talk","gold_status":"classified","notes":"fixture acknowledgment"}
+{"segment_id":5,"gold_category":null,"gold_status":"topic_outlier","notes":"fixture HDBSCAN outlier"}

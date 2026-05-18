@@ -1,0 +1,60 @@
+{
+  "name": "conversation-explorer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "imessage:discover": "tsx scripts/imessage-discover.ts",
+    "extract": "tsx scripts/extract.ts",
+    "extract:comparisons": "tsx scripts/extract-comparisons.ts",
+    "classify:segments": "python3 scripts/refine_categories.py && python3 scripts/transitions.py",
+    "thumbs": "tsx scripts/thumbs.ts",
+    "attachments:embed": "python3 scripts/embed_attachments.py",
+    "etl": "tsx scripts/etl.ts",
+    "dev": "vite dev --port 5180",
+    "eval": "python3 scripts/eval/build-fixtures.py && python3 scripts/eval/run.py --db data/fixtures/tiny.db",
+    "prepare:data": "node scripts/prepare-runtime-data.mjs",
+    "runtime:pack": "node scripts/runtime-pack.mjs",
+    "runtime:publish": "node scripts/runtime-publish.mjs",
+    "build": "pnpm prepare:data && vite build",
+    "compare:before-after": "tsx scripts/compare-before-after.ts",
+    "bench:page": "tsx scripts/bench-page-load.ts",
+    "topic:stability": "python3 scripts/topic_stability.py",
+    "preview": "vite preview",
+    "start": "node .output/server/index.mjs",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-router": "^1.132.0",
+    "@tanstack/react-router-ssr-query": "^1.131.7",
+    "@tanstack/react-start": "^1.132.0",
+    "@tanstack/react-virtual": "^3.13.0",
+    "@tanstack/router-plugin": "^1.132.0",
+    "better-sqlite3": "^11.7.0",
+    "nitro": "npm:nitro-nightly@3.0.1-20260212-205859-0f4c665f",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "recharts": "^3.7.0",
+    "tailwindcss": "^4.1.18",
+    "vite-tsconfig-paths": "^6.0.2",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^7.1.7",
+    "vitest": "^4.1.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild"
+    ]
+  }
+}

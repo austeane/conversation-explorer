@@ -1,0 +1,365 @@
+{
+  "generated_at": "2026-05-18T03:59:53.804965+00:00",
+  "db_path": "data/fixtures/tiny.db",
+  "summary": "4 suites, 31 labels, macro F1 0.879",
+  "overall": {
+    "total": 31,
+    "accuracy": 0.9032,
+    "macro_f1": 0.8794
+  },
+  "suites": [
+    {
+      "name": "segment_categories",
+      "total": 5,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "labels": [
+        {
+          "label": "emotional_support",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "logistics",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "romantic_intimacy",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "small_talk",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "topic_outlier",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      ],
+      "confusion": [
+        {
+          "gold": "emotional_support",
+          "predicted": "emotional_support",
+          "n": 1
+        },
+        {
+          "gold": "logistics",
+          "predicted": "logistics",
+          "n": 1
+        },
+        {
+          "gold": "romantic_intimacy",
+          "predicted": "romantic_intimacy",
+          "n": 1
+        },
+        {
+          "gold": "small_talk",
+          "predicted": "small_talk",
+          "n": 1
+        },
+        {
+          "gold": "topic_outlier",
+          "predicted": "topic_outlier",
+          "n": 1
+        }
+      ]
+    },
+    {
+      "name": "turn_moves",
+      "total": 6,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "labels": [
+        {
+          "label": "affection",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "care",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "object",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "play",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "question",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "vulnerable",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      ],
+      "confusion": [
+        {
+          "gold": "affection",
+          "predicted": "affection",
+          "n": 1
+        },
+        {
+          "gold": "care",
+          "predicted": "care",
+          "n": 1
+        },
+        {
+          "gold": "object",
+          "predicted": "object",
+          "n": 1
+        },
+        {
+          "gold": "play",
+          "predicted": "play",
+          "n": 1
+        },
+        {
+          "gold": "question",
+          "predicted": "question",
+          "n": 1
+        },
+        {
+          "gold": "vulnerable",
+          "predicted": "vulnerable",
+          "n": 1
+        }
+      ]
+    },
+    {
+      "name": "strain_repair",
+      "total": 12,
+      "accuracy": 0.8333,
+      "macro_f1": 0.8032,
+      "labels": [
+        {
+          "label": "care",
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6667
+        },
+        {
+          "label": "no",
+          "tp": 4,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1.0,
+          "recall": 0.8,
+          "f1": 0.8889
+        },
+        {
+          "label": "none",
+          "tp": 2,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1.0,
+          "recall": 0.6667,
+          "f1": 0.8
+        },
+        {
+          "label": "yes",
+          "tp": 3,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571
+        }
+      ],
+      "confusion": [
+        {
+          "gold": "care",
+          "predicted": "care",
+          "n": 1
+        },
+        {
+          "gold": "no",
+          "predicted": "no",
+          "n": 4
+        },
+        {
+          "gold": "no",
+          "predicted": "yes",
+          "n": 1
+        },
+        {
+          "gold": "none",
+          "predicted": "care",
+          "n": 1
+        },
+        {
+          "gold": "none",
+          "predicted": "none",
+          "n": 2
+        },
+        {
+          "gold": "yes",
+          "predicted": "yes",
+          "n": 3
+        }
+      ]
+    },
+    {
+      "name": "restart_openers",
+      "total": 8,
+      "accuracy": 0.875,
+      "macro_f1": 0.7143,
+      "labels": [
+        {
+          "label": "affection",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "care",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "logistics",
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "label": "no",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "play",
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        {
+          "label": "question",
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        {
+          "label": "yes",
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      ],
+      "confusion": [
+        {
+          "gold": "affection",
+          "predicted": "affection",
+          "n": 1
+        },
+        {
+          "gold": "care",
+          "predicted": "care",
+          "n": 1
+        },
+        {
+          "gold": "logistics",
+          "predicted": "question",
+          "n": 1
+        },
+        {
+          "gold": "no",
+          "predicted": "no",
+          "n": 1
+        },
+        {
+          "gold": "play",
+          "predicted": "play",
+          "n": 1
+        },
+        {
+          "gold": "yes",
+          "predicted": "yes",
+          "n": 3
+        }
+      ]
+    }
+  ]
+}

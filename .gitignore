@@ -1,0 +1,56 @@
+node_modules
+.output
+.tanstack
+dist
+
+# python venvs (bertopic / embeddings / wordfreq)
+.venv
+.venv-baseline
+
+# raw chat.db snapshot — full iMessage history, must never be pushed
+config/conversation.local.json
+data/raw/
+data/runtime/
+data/*.db
+data/*.db.gz
+data/*.db-shm
+data/*.db-wal
+data/eval/private/
+data/ask/
+data/baseline-frequencies.json
+data/topic_reps.json
+data/migration/
+
+# per-message embedding matrix is 231MB — exceeds GitHub limits, regenerable via scripts/embed.py
+data/embeddings_msg.npy
+data/embeddings_msg_ids.npy
+data/embeddings_attach.npy
+data/embeddings_attach_ids.npy
+
+# offline segment/topic-model artifacts; runtime uses data/runtime/conversation.db instead
+data/segment_embeddings.npy
+data/segment_ids.npy
+data/segment_umap2.npy
+
+# generated thumbnails — sensitive; revisit at deploy time (LFS / volume / on-demand)
+public/attachments/
+
+# generated local browser/debug artifacts
+.playwright-mcp/
+prompt-exports/
+tmp/page-analysis/
+summaries/
+NOTES_*.md
+comparisons-desktop-snapshot.md
+repomix-output.xml
+*-desktop.png
+*-mobile.png
+route-hardening-*.png
+*.png
+__pycache__/
+
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
